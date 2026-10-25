@@ -2,6 +2,12 @@ name: Build Morphe bundle
 
 on:
   workflow_dispatch:
+    inputs:
+      publish:
+        description: Publish this verified bundle as a public GitHub Release
+        required: true
+        type: boolean
+        default: false
   push:
     branches: [main]
     paths:
@@ -39,3 +45,23 @@ jobs:
           name: hushgram-morphe-bundle
           path: patches/build/release/*
           if-no-files-found: error
+
+  release:
+    if: ${{ inputs.publish }}
+    needs: bundle
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: hushgram-morphe-bundle
+          path: release
+      - name: Publish verified bundle
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version="$(awk -F ' = ' '$1 == "version" { print $2 }' gradle.properties)"
+          gh release create "v${version}-tw" release/* --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --title "Traditional Chinese bundle ${version}" --notes "Traditional Chinese (Taiwan) localization build for Morphe."
