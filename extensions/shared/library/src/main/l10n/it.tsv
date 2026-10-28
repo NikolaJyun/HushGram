@@ -164,12 +164,12 @@ Choose a folder name under Movies and Pictures. Invalid characters become unders
 Save	Salva
 Folder name	Nome della cartella
 Folder set to %1$s.	Cartella impostata su %1$s.
-Video file name	Nome del file video
+Download file name	Nome file dei download
 %1$s becomes the date and time of the save, %2$s the video's number on Instagram, %3$s who posted it and %4$s the day it was posted. What a save doesn't know is left out, and a name with none of these gets the date added. When the name is already in the folder, the time of the save goes on the end. Invalid characters become underscores. Leave it blank to use the default, %5$s.	%1$s diventa la data e l'ora del salvataggio, %2$s il numero del video su Instagram, %3$s chi l'ha pubblicato e %4$s il giorno di pubblicazione. Ciò che un salvataggio non conosce viene omesso, e un nome senza nessuno di questi riceve la data. Se il nome è già nella cartella, l'ora del salvataggio viene aggiunta in fondo. I caratteri non validi diventano trattini bassi. Lascia vuoto per usare il predefinito, %5$s.
 File name	Nome del file
 File name set to %1$s.	Nome del file impostato su %1$s.
 Videos go to %1$s and photos to %2$s.	I video vanno in %1$s e le foto in %2$s.
-Example without post details	Esempio senza dettagli del post
+Example file name	Nome file di esempio
 Cancel saving this video	Annulla il salvataggio di questo video
 Cancel saving this photo	Annulla il salvataggio di questa foto
 Download on reels	Scarica sui reel
@@ -299,6 +299,8 @@ Hide suggested stories	Nascondi le storie suggerite
 Hides stories from accounts you don't follow, and accounts Instagram suggests, in the row at the top of Home. Stories from accounts you follow stay.	Nasconde le storie di account che non segui, e gli account suggeriti da Instagram, nella riga in alto nella Home. Le storie degli account che segui restano.
 Hide the Stories tray	Nascondi la barra delle storie
 Takes the whole row of stories off the top of Home, Your story included. Stories still open from a profile or a message.	Toglie l'intera riga delle storie dalla parte alta della Home, compresa La tua storia. Le storie si aprono comunque da un profilo o da un messaggio.
+Keep the Stories tray in the feed	Tieni la barra delle storie nel feed
+Stops Instagram from floating the row of stories over Home when you come back to it mid-feed or scroll up fast. The row stays at the top of the feed and scrolls away with it.	Impedisce a Instagram di far galleggiare la riga delle storie sopra la Home quando ci torni a metà feed o scorri in su velocemente. La riga resta in cima al feed e scorre via con esso.
 Hide the Music for you card	Nascondi la scheda Musica per te
 Keeps Instagram's Music for you card from turning up between the stories you watch. The stories themselves stay.	Impedisce alla scheda Musica per te di Instagram di comparire tra le storie che guardi. Le storie restano.
 Hide Suggested for you between stories	Nascondi Suggeriti per te tra le storie
@@ -311,6 +313,8 @@ the start-up fix for x86 devices	la correzione di avvio per i dispositivi x86
 # context: toasts when a long press of Home gave up waiting on Instagram's developer options to load
 Pure black dark mode	Modalità scura nero puro
 Instagram's dark mode uses pure black instead of its near-black gray, and so do the menus that slide up from the bottom. Buttons keep their own grays.	La modalità scura di Instagram usa il nero puro invece del suo grigio quasi nero, e così i menu che salgono dal basso. I pulsanti mantengono i loro grigi.
+Pure black dark mode isn't in this build	Modalità scura nero puro non è in questa build
+To make dark mode pure black instead of dark gray, which can save battery on an OLED screen, pick Pure black dark mode in Morphe Manager the next time you patch Instagram.	Per avere la modalità scura in nero puro invece che grigio scuro, che può far risparmiare batteria su uno schermo OLED, scegli Modalità scura nero puro in Morphe Manager la prossima volta che patchi Instagram.
 the pure black dark mode	la modalità scura nero puro
 No Play Store updates	Nessun aggiornamento dal Play Store
 Google Play won't offer Meta's updates over this build. To go back to the normal Instagram, uninstall this one first, which deletes Instagram's data on this phone. Later HushGram builds need Change version code too, or they won't install over this one.	Google Play non offrirà gli aggiornamenti di Meta su questa build. Per tornare al normale Instagram, disinstalla prima questo, il che cancella i dati di Instagram su questo telefono. Anche le build future di HushGram richiedono Cambia il codice versione, altrimenti non si installeranno sopra questa.
@@ -343,7 +347,7 @@ Profiles	Profili
 Show if a profile follows you	Mostra se un profilo ti segue
 Adds Follows you or Doesn't follow you beside the name on someone's profile, after their pronouns if they've set any. Nothing shows until Instagram has checked.	Aggiunge Ti segue o Non ti segue accanto al nome sul profilo di qualcuno, dopo i suoi pronomi se li ha impostati. Non compare nulla finché Instagram non ha controllato.
 Mark who doesn't follow you back	Segna chi non ti segue a sua volta
-On your own Following list, adds Doesn't follow you after the name of each account that doesn't follow you back. Nothing shows until Instagram has checked.	Nella tua lista Seguiti, aggiunge Non ti segue dopo il nome di ogni account che non ti segue a sua volta. Non compare nulla finché Instagram non ha controllato.
+On your own Following list, adds Doesn't follow you before the name of each account that doesn't follow you back. Nothing shows until Instagram has checked.	Nella tua lista Seguiti, aggiunge Non ti segue prima del nome di ogni account che non ti segue a sua volta. Non compare nulla finché Instagram non ha controllato.
 Put accounts that don't follow you back first	Metti prima gli account che non ti seguono a loro volta
 On your own Following list, moves the accounts that don't follow you back to the top and keeps Instagram's order within each group. Accounts Instagram hasn't checked yet stay below.	Nella tua lista Seguiti, sposta in alto gli account che non ti seguono a loro volta e mantiene l'ordine di Instagram all'interno di ogni gruppo. Gli account che Instagram non ha ancora controllato restano sotto.
 Follows you	Ti segue
@@ -477,6 +481,7 @@ On a phone under 1440 pixels wide, asks Instagram for photos sized for a wider s
 Full size covers	Copertine a grandezza piena
 Reel covers and grid pictures come at full size, so Download cover saves a picked cover at full size too. Grids use a lot more data. Restart Instagram to see the change.	Le copertine dei reel e le immagini della griglia arrivano a grandezza piena, così Scarica la copertina salva anche una copertina scelta a grandezza piena. Le griglie usano molti più dati. Riavvia Instagram per vedere la modifica.
 Stop swiping between tabs	Blocca lo scorrimento tra le schede
+%d notification	%d notifica
 %d notifications	%d notifiche
 1 hour	1 ora
 1 minute	1 minuto
@@ -527,6 +532,8 @@ Screenshots and screen recordings work wherever Instagram blocks them, like disa
 Turns the switches that keep what you do to yourself on or off in one go, like View stories anonymously and Hide that you're typing. Each one keeps its own switch.	Attiva o disattiva in un colpo solo gli interruttori che tengono per te ciò che fai, come Guarda le storie in modo anonimo e Nascondi che stai scrivendo. Ognuno mantiene il proprio interruttore.
 View live anonymously	Guarda le live in modo anonimo
 Photos and videos sent as view once or replayable stay in the chat so you can open them again. Open the chat again to update ones already loaded.	Le foto e i video inviati a visualizzazione singola o rivedibili restano nella chat così puoi riaprirli. Riapri la chat per aggiornare quelli già caricati.
+Swipe through a chat's reels	Scorri tra i reel di una chat
+Swiping up on a reel you opened from a chat goes through the other reels shared in that chat before any suggested reels. Back takes you to the chat.	Scorrendo verso l'alto su un reel aperto da una chat passi per gli altri reel condivisi in quella chat prima di quelli suggeriti. Indietro ti riporta alla chat.
 Adds Download cover under Download. It saves the still picture a reel shows before it plays, at its largest size.	Aggiunge Scarica la copertina sotto Scarica. Salva l'immagine fissa che un reel mostra prima di partire, alla dimensione massima.
 Adds Download audio under Download. It saves the sound of the reel as an audio file.	Aggiunge Scarica l'audio sotto Scarica. Salva il suono del reel come file audio.
 After 20 reels, swiping in Reels stops until Instagram has been in the background for 15 minutes. A reel you open from a message or a post still plays.	Dopo 20 reel, lo scorrimento nei reel si ferma finché Instagram non resta in background per 15 minuti. Un reel che apri da un messaggio o da un post parte comunque.
@@ -581,8 +588,10 @@ Hide comments	Nascondi i commenti
 Hide memories and recaps	Nascondi ricordi e riepiloghi
 Hide story rewinds	Nascondi i riavvolgimenti delle storie
 Nothing in the row of stories at the top of Home loads, your own story included, and highlights on profiles stay empty too. Saves data. A story ring on a profile or in a chat still opens its stories.	Nulla nella riga delle storie in alto nella Home si carica, compresa la tua storia, e anche le storie in evidenza sui profili restano vuote. Risparmia dati. Un cerchio di storia su un profilo o in una chat apre comunque le sue storie.
-Open categories as pages	Apri le categorie come pagine
-Settings shows a list of its categories, and a tap opens one on its own page. Search still looks through all of them.	Le impostazioni mostrano un elenco delle categorie e un tocco ne apre una nella sua pagina. La ricerca guarda comunque in tutte.
+Expandable categories	Categorie espandibili
+Tap a category to show or hide its settings on this page.	Tocca una categoria per mostrare o nascondere le sue impostazioni in questa pagina.
+Expanded	Espansa
+Collapsed	Compressa
 Hide the HushGram row in Instagram's menu	Nascondi la riga HushGram nel menu di Instagram
 Settings shortcut on the app icon	Scorciatoia alle impostazioni sull'icona dell'app
 Open settings from the logo	Apri le impostazioni dal logo
@@ -821,6 +830,8 @@ Chat %1$s	Chat %1$s
 # context: Hidden chats under Messages, the list of chats left out of the inbox with their notifications dropped, and the toasts after checking a chat in it
 Hidden chats	Chat nascoste
 Hide single chats. A hidden chat leaves your inbox and its notifications don't post until you show it here again.	Nascondi singole chat. Una chat nascosta lascia la tua posta in arrivo e le sue notifiche non compaiono finché non la mostri di nuovo qui.
+Double-tap Messages for hidden chats	Doppio tocco su Messaggi per le chat nascoste
+Two quick taps on the Messages button, on the tab bar or at the top of Home, open your hidden chats. While a lock is on, it asks for it first. One tap opens Messages as usual.	Due tocchi veloci sul pulsante Messaggi, nella barra delle schede o in cima alla Home, aprono le tue chat nascoste. Se è attivo un blocco, lo chiede prima. Un tocco apre Messaggi come al solito.
 Open a chat in Instagram, then come back here to hide it.	Apri una chat in Instagram, poi torna qui per nasconderla.
 %1$s is hidden	%1$s è nascosta
 %1$s is shown again	%1$s è di nuovo visibile
@@ -910,7 +921,7 @@ Space under the tab bar	Spazio sotto la barra delle schede
 A little more	Un po' di più
 More	Di più
 Hide the tab bar as you scroll	Nascondi la barra delle schede durante lo scorrimento
-Scrolling a list down slides the pill out of the way. Scrolling up, reaching the top, or changing tab brings it back. Restart Instagram after changing it.	Scorrere una lista verso il basso fa scivolare via la pillola. Scorrere verso l'alto, arrivare in cima o cambiare scheda la riporta. Riavvia Instagram dopo averlo cambiato.
+Scrolling a list down slides the tab bar out of the way. Scrolling up, reaching the top, or changing tab brings it back. It works with or without Glass tab bar. Restart Instagram after changing it.	Scorrere una lista verso il basso fa scivolare via la barra delle schede. Scorrere verso l'alto, arrivare in cima o cambiare scheda la riporta. Funziona con o senza Barra delle schede di vetro. Riavvia Instagram dopo averlo cambiato.
 Hide the tab bar on Reels	Nascondi la barra delle schede nei reel
 # context: a choice in the Hide the tab bar on Reels list under Glass tab bar; the bar is never hidden there
 Never	Mai
@@ -941,15 +952,15 @@ Hides the status bar and the navigation bar while your messages or a chat shows.
 Hide Notes on profile pictures	Nascondi le Note sulle foto profilo
 Takes the Notes bubble off profile pictures, yours included. Notes in Messages stay as they are.	Toglie la bolla delle Note dalle foto profilo, compresa la tua. Le note nei Messaggi restano come sono.
 # context: the line that opens a category's page in HushGram settings, under the page title
-How you open HushGram, and how this screen is laid out.	Come apri HushGram e come è organizzata questa schermata.
-Hide ads and share less about yourself with Instagram.	Nascondi gli annunci e condividi meno di te con Instagram.
+How you open HushGram and lay out settings.	Come apri HushGram e organizzi le impostazioni.
+Hide ads and share less with Instagram.	Nascondi gli annunci e condividi meno con Instagram.
 Choose what Home shows and how it behaves.	Scegli cosa mostra la Home e come si comporta.
-Take Meta AI out of search, your feed, reels and profiles.	Togli Meta AI dalla ricerca, dal feed, dai reel e dai profili.
-Tidy up the Search tab and what it remembers.	Metti in ordine la scheda Cerca e ciò che ricorda.
-Keep your chats private and your inbox clear of extras.	Tieni private le tue chat e libera la posta in arrivo dagli extra.
-Choose what reels show, and how they play and scroll.	Scegli cosa mostrano i reel, e come partono e scorrono.
-Choose which stories you see and what people see you do.	Scegli quali storie vedi e cosa vedono le persone di ciò che fai.
-Choose how videos start, sound and look.	Scegli come partono, suonano e appaiono i video.
+Control where Meta AI appears.	Scegli dove compare Meta AI.
+Search, suggestions and the Explore grid.	Ricerca, suggerimenti e griglia Esplora.
+Privacy and controls for your chats.	Privacy e controlli per le tue chat.
+Playback and controls in the Reels tab.	Riproduzione e controlli nella scheda Reels.
+Viewing, sound and the stories tray.	Visualizzazione, audio e vassoio delle storie.
+Media quality, auto-play and controls.	Qualità dei contenuti, riproduzione automatica e controlli.
 Take buttons you don't use off posts and the share sheet.	Togli da post e foglio di condivisione i pulsanti che non usi.
 Copy, save or hide comments.	Copia, salva o nascondi i commenti.
 See who follows you back, and clear extras off profiles.	Guarda chi ti segue a sua volta e togli gli extra dai profili.
@@ -1014,8 +1025,21 @@ Active at %1$s	Attivo alle %1$s
 Active yesterday at %1$s	Attivo ieri alle %1$s
 Active %1$s at %2$s	Attivo %1$s alle %2$s
 Rounded corners on posts	Angoli arrotondati sui post
-Rounds the corners of a post's photo, video and carousel pages in Home and Following. Posts you scroll to after a change show it. Stories, profiles, Explore and Reels stay as they were.	Arrotonda gli angoli di foto, video e pagine di carosello di un post nella Home e in Seguiti. I post a cui scorri dopo una modifica lo mostrano. Storie, profili, Esplora e reel restano come erano.
+Rounds the corners of a post's photo, video and carousel pages in Home and Following. Posts you scroll to after a change show it. Stories, profiles and Explore stay as they were.	Arrotonda gli angoli di foto, video e pagine di carosello di un post nella Home e in Seguiti. I post a cui scorri dopo una modifica lo mostrano. Storie, profili ed Esplora restano come erano.
 Corner size	Dimensione degli angoli
+Rounded corners on Reels	Angoli arrotondati sui reel
+Rounded corners on stories	Angoli arrotondati sulle storie
+Seek bar on stories	Barra di scorrimento nelle storie
+Shows a bar near the bottom of a video story. Drag it to jump to any point in the video. Photos don't get one.	Mostra una barra vicino al fondo di una storia video. Trascinala per saltare a qualsiasi punto del video. Le foto non ce l'hanno.
+Thicker story progress bar	Barra di avanzamento delle storie più spessa
+Draws the bar along the top of a story as thick as the choice below. Its segments and timing stay as they were.	Disegna la barra in cima a una storia spessa quanto la scelta qui sotto. I segmenti e i tempi restano come erano.
+Thickness	Spessore
+Twice as thick	Spessa il doppio
+Three times as thick	Spessa il triplo
+Rounds the corners of a reel's video in the Reels tab and wherever a reel opens full screen. The seek bar, captions and buttons stay whole.	Arrotonda gli angoli del video di un reel nella scheda Reels e ovunque un reel si apra a schermo intero. Barra di avanzamento, sottotitoli e pulsanti restano interi.
+Rounds the corners of a story's photo or video, from the tray, a profile or a highlight. The progress bar, names and stickers stay whole.	Arrotonda gli angoli della foto o del video di una storia, dalla barra, da un profilo o da un'evidenza. Barra di avanzamento, nomi e sticker restano interi.
+Peek at the next carousel page	Intravedi la pagina successiva del carosello
+A carousel post's page sits a little in from the edges, with the start of the next page showing at the right.	La pagina di un post a carosello sta un po' staccata dai bordi, con l'inizio della pagina successiva visibile a destra.
 Large	Grande
 Small	Piccola
 # context: a toast shown once when safe mode has paused HushGram on its own after crashes at start
@@ -1039,28 +1063,6 @@ Loading the picture...	Caricamento dell'immagine...
 # context: the settings row right above Support HushGram that opens a new bug report on GitHub
 Report a problem	Segnala un problema
 Opens a GitHub report with your versions and settings filled in. Add what happened.	Apre una segnalazione su GitHub con le tue versioni e impostazioni già compilate. Aggiungi cos'è successo.
-# context: the settings row under Search, and the title of its dialog of one-tap choices
-Quick setups	Configurazioni rapide
-Turn on a set of switches in one tap, or put every switch back the way it started. Press and hold to hide this row.	Attiva un gruppo di interruttori con un tocco, oppure rimetti ogni interruttore come all'inizio. Tieni premuto per nascondere questa riga.
-# context: row on Settings backup that hides or shows the Quick setups row on the home page, and its two summaries
-Quick setups on the home page	Configurazioni rapide nella pagina iniziale
-Shown. Tap to hide it.	Visibile. Tocca per nasconderla.
-Hidden. Tap to show it again.	Nascosta. Tocca per mostrarla di nuovo.
-# context: toast after a long press hides Quick setups; the page named is Settings backup
-Quick setups hidden. Bring it back from %1$s.	Configurazioni rapide nascoste. Riportale da %1$s.
-# context: a Quick setups choice that hides ads, suggestions and promotions
-Quiet	Silenzioso
-# context: a Quick setups choice that turns on the privacy switches
-Privacy	Privacy
-# context: a Quick setups choice that puts every switch back the way it started
-Back to defaults	Torna ai predefiniti
-Hides ads, suggested accounts and posts, surveys and promotions.	Nasconde annunci, account e post suggeriti, sondaggi e promozioni.
-Hides your seen receipts, typing and active status. Allows screenshots and stops link tracking and usage reports.	Nasconde le conferme di lettura, la scrittura e lo stato di attività. Consente gli screenshot e ferma il tracciamento dei link e i report di utilizzo.
-Puts every switch back the way it started. Your locks stay as they are.	Rimette ogni interruttore come all'inizio. I tuoi blocchi restano come sono.
-# context: toast after a Quick setups choice changed exactly one switch
-Changed %1$d setting	Cambiata %1$d impostazione
-# context: the same toast for any other count, zero included; %1$d is how many
-Changed %1$d settings	Cambiate %1$d impostazioni
 Hide the reply bar on reels from chats	Nascondi la barra di risposta sui reel dalle chat
 The Reply to box under a reel you open from a chat, with its reactions and plus button. The chat's own message box stays.	La casella Rispondi a sotto un reel che apri da una chat, con le sue reazioni e il pulsante più. La casella dei messaggi della chat resta.
 # context: Layout list title; it picks the font Instagram's text draws in
@@ -1229,20 +1231,21 @@ New	Nuovo
 App icon	Icona dell'app
 Instagram on black	Instagram su nero
 Instagram on plum	Instagram su prugna
+Instagram in black on white	Instagram nero su bianco
 Instagram's own	Quella di Instagram
 Instagram's own. Pick another to change the icon on your home screen and in the app drawer.	Quella di Instagram. Scegline un'altra per cambiare l'icona nella schermata Home e nel cassetto delle app.
 %1$s. It shows once you leave Instagram. If the icon is gone from your home screen, add it again from the app drawer.	%1$s. Compare quando esci da Instagram. Se l'icona sparisce dalla schermata Home, aggiungila di nuovo dal cassetto delle app.
 the home screen icon you picked	l'icona della schermata Home che hai scelto
 # context: Your fonts in story text switch under Stories and the Your story fonts row and dialog under it; the fonts are .ttf or .otf files picked from the phone, shown in Instagram's story text editor after its own
 Your fonts in story text	I tuoi caratteri nel testo delle storie
-Adds the fonts below to the story text editor, after Instagram's own fonts, which all stay. Pick one there like any other font.	Aggiunge i caratteri qui sotto all'editor di testo delle storie, dopo quelli di Instagram, che restano tutti. Sceglilo lì come qualsiasi altro carattere.
+Adds the fonts below to the story text editor alongside Instagram's own fonts, which all stay. Pick one there like any other font.	Aggiunge i caratteri qui sotto all'editor di testo delle storie insieme a quelli di Instagram, che restano tutti. Sceglili lì come qualsiasi altro carattere.
 Your story fonts	I tuoi caratteri per le storie
 Add .ttf or .otf files from your phone. Uncheck one to take it out.	Aggiungi file .ttf o .otf dal telefono. Togli la spunta per rimuoverne uno.
-No fonts added yet. Add a .ttf or .otf file and it shows up in the story text editor, after Instagram's fonts.	Nessun carattere aggiunto. Aggiungi un file .ttf o .otf e comparirà nell'editor di testo delle storie, dopo i caratteri di Instagram.
+No fonts added yet. Add a .ttf or .otf file and it shows up in the story text editor alongside Instagram's fonts.	Nessun carattere aggiunto. Aggiungi un file .ttf o .otf e comparirà nell'editor di testo delle storie insieme ai caratteri di Instagram.
 Add a font file	Aggiungi un file di carattere
 Removed from your story fonts	Rimosso dai tuoi caratteri per le storie
 That file isn't a font HushGram can use. Nothing was added.	Quel file non è un carattere che HushGram può usare. Non è stato aggiunto nulla.
-Added %1$s. Pick it in the story text editor, after Instagram's fonts.	%1$s aggiunto. Sceglilo nell'editor di testo delle storie, dopo i caratteri di Instagram.
+Added %1$s. Pick it in the story text editor alongside Instagram's fonts.	%1$s aggiunto. Sceglilo nell'editor di testo delle storie insieme ai caratteri di Instagram.
 # context: Logo and titles at the start, a Tab bar switch under Center titles on other screens; the opposite of the three Center switches (#310)
 Logo and titles at the start	Logo e titoli all'inizio
 Puts Instagram's logo and every bar's title at the start of the bar, where Instagram used to show them. Turn it on if Instagram centers them for you. It wins over the centering switches above. Restart Instagram to see the change on Home.	Mette il logo di Instagram e il titolo di ogni barra all'inizio della barra, dove Instagram li mostrava prima. Attivalo se Instagram te li centra. Ha la precedenza sugli interruttori per centrare qui sopra. Riavvia Instagram per vedere la modifica nella Home.
@@ -1256,3 +1259,36 @@ Every row of Instagram's Settings and activity shows. Untick the ones you don't 
 %1$d row is left off Instagram's Settings and activity.	%1$d riga è tolta da Impostazioni e attività di Instagram.
 %1$d rows are left off Instagram's Settings and activity.	%1$d righe sono tolte da Impostazioni e attività di Instagram.
 Open Settings and activity in Instagram once, then come back here. Its rows show up in this list to untick.	Apri una volta Impostazioni e attività in Instagram, poi torna qui. Le sue righe compaiono in questo elenco per togliere la spunta.
+Date in backup file names	Data nei nomi dei file di backup
+Add the current date and time when exporting settings. Off keeps HushGram-settings.json.	Aggiunge la data e l’ora attuali quando esporti le impostazioni. Se disattivato, resta HushGram-settings.json.
+%1$s is the post's shortcode. Stories and unknown posts leave it out. Using it also names photos.	%1$s è il codice breve del post. Viene omesso per storie e post sconosciuti. Usandolo, il modello vale anche per le foto.
+Videos and photos use %1$s. Unknown codes are left out.	Video e foto usano %1$s. I codici sconosciuti vengono omessi.
+Tab bar layout	Layout della barra delle schede
+Swipe between tabs	Scorri tra le schede
+Classic	Classica
+Instagram's choice	Scelta di Instagram
+Keeps the newer bar, with Messages on it, and you can swipe sideways between every tab, even if Instagram moves your account back to the older one. Restart Instagram to see the change.	Mantiene la barra più nuova, con Messaggi, e puoi scorrere di lato tra tutte le schede, anche se Instagram riporta il tuo account a quella vecchia. Riavvia Instagram per vedere la modifica.
+Keeps the older bar, with Create on it and Messages at the top of Home. Swiping only moves between Home and the screens beside it. Restart Instagram to see the change.	Mantiene la barra vecchia, con Crea e con Messaggi in alto nella Home. Lo scorrimento passa solo tra la Home e le schermate accanto. Riavvia Instagram per vedere la modifica.
+Instagram picks the tab bar for your account, and it can switch between the two on its own.	Instagram sceglie la barra delle schede per il tuo account e può passare dall'una all'altra da sola.
+Group Instagram's notifications, and take suggestions off the Notifications page.	Raggruppa le notifiche di Instagram e togli i suggerimenti dalla pagina Notifiche.
+Take suggestions and Featured off the Notifications page.	Togli i suggerimenti e In evidenza dalla pagina Notifiche.
+Version warnings	Avvisi di versione
+Pause HushGram, lock these settings, or make a report when something breaks.	Metti in pausa HushGram, blocca queste impostazioni o crea un report quando qualcosa non va.
+Choose a folder	Scegli una cartella
+Saves go to Movies and Pictures. Pick any folder instead, a hidden one too, and every photo and video goes there.	I salvataggi vanno in Movies e Pictures. Scegli invece una cartella qualsiasi, anche nascosta, e ogni foto e video andrà lì.
+Photos and videos go to %1$s. Tap to pick another folder.	Foto e video vanno in %1$s. Tocca per scegliere un'altra cartella.
+HushGram can't reach %1$s anymore, so saves go to Movies and Pictures. Pick the folder again.	HushGram non riesce più a raggiungere %1$s, quindi i salvataggi vanno in Movies e Pictures. Scegli di nuovo la cartella.
+Use Movies and Pictures	Usa Movies e Pictures
+Stop using the folder you picked. Saves go back to Movies and Pictures.	Smetti di usare la cartella scelta. I salvataggi tornano in Movies e Pictures.
+Couldn't use that folder. Saves still go where they did.	Impossibile usare quella cartella. I salvataggi vanno ancora dove andavano.
+Saves go to Movies and Pictures again.	I salvataggi tornano in Movies e Pictures.
+%1$s didn't take this save, so it went to Movies and Pictures.	%1$s non ha accettato questo salvataggio, quindi è finito in Movies e Pictures.
+Start reels with sound	Avvia i reel con l'audio
+A reel you tap open from a post on Home plays with sound, and Home is muted again when you go back. Your phone's ringer and volume still count.	Un reel che apri da un post nella Home parte con l'audio, e la Home torna muta quando torni indietro. Suoneria e volume del telefono contano ancora.
+Keep your place in Home	Mantieni la posizione in Home
+Coming back to Instagram leaves Home on the post you were on, however long you were away. Pull down to refresh still reloads it.	Quando torni su Instagram, la Home resta sul post in cui eri, per quanto tempo tu sia stato via. Trascinare verso il basso per aggiornare la ricarica comunque.
+Filter the Stories tray by verified accounts	Filtra la barra delle storie per account verificati
+The row of stories at the top of Home keeps only the accounts the choice below names, by Instagram's verified badge. Your own story stays. Turn it off to see every story.	La fila di storie in cima alla Home tiene solo gli account indicati dalla scelta qui sotto, in base al badge di verifica di Instagram. La tua storia resta. Disattivalo per vedere tutte le storie.
+Stories to keep	Storie da tenere
+Only verified accounts	Solo account verificati
+Only accounts that aren't verified	Solo account non verificati

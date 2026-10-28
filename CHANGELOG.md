@@ -4,6 +4,92 @@ Every HushGram release, newest first.
 
 ## Unreleased
 
+### Bug Fixes
+
+* **Tooling:** Patching for a phone without `-Apk` takes the declared Instagram build from the fixture folder the way the release gate does, split `.apks` bundles included. It used to skip an `.apks` and could pick up any file with the version in its name.
+
+## 0.0.17 (2026-10-28)
+
+### Features
+
+* **Instagram - Keep your place in Home:** New switch under Feed. Coming back to Instagram leaves Home on the post you were on, however long you were away. Instagram no longer reloads it or resets the app to the top. Pull down still refreshes. Starts off. Asked for in #354.
+* **Instagram - Glass tab bar:** `Hide the tab bar as you scroll` works with the glass off too. Scroll down and Instagram's own bar slides away while the page fills its space. Scroll up and it's back. Reels keep their bar. Asked for in #343.
+* **Instagram - Rounded post corners:** `Rounded corners on Reels` under Feed rounds a reel's video in the Reels tab and full screen, at the same Corner size. The seek bar, captions and buttons stay whole. Starts off. Asked for in #362.
+* **Instagram - Rounded post corners:** `Rounded corners on stories` under Feed rounds a story's photo or video, whether it opens from the tray, a profile or a highlight, at the same Corner size. The progress bar, names and stickers stay whole. Starts off. Asked for in #363 and #368.
+* **Instagram - Rounded post corners:** `Peek at the next carousel page` under Feed sits each carousel page in from the edges, with the start of the next page showing at the right. Starts off. Asked for in #361.
+* **Instagram - Thicker story progress bar:** new patch. `Thicker story progress bar` under Stories draws the bar along the top of a story twice or three times as thick. Its segments and timing don't change. Starts off. Asked for in #360.
+* **Instagram - Start reels with sound:** new patch. `Start reels with sound` under Playback plays a reel you tap open from a post on Home with sound, and Home is muted again when you go back. Starts off. Asked for in #342.
+* **Instagram - Pick the app icon:** `App icon` adds Instagram in black on white, a white icon with Instagram's glyph in black. Themed icons still show Instagram's glyph. Asked for in #353.
+* **Instagram - Tab bar layout:** new patch. `Tab bar layout` under Tab bar keeps the newer bar, where you swipe between every tab, or the classic one, even when Instagram switches your account. Starts on Instagram's choice. Asked for in #356.
+* **Instagram - Lock your messages:** `Double-tap Messages for hidden chats` under Messages opens your hidden chats from two quick taps on the Messages button, after the lock when one's on. One tap still opens Messages. Starts off. Asked for in #358.
+* **Instagram - HushGram settings:** A build without Pure black dark mode now says under Layout how to get it: pick it in Morphe Manager next time you patch. Searching settings for "amoled" or "oled" finds it too. Asked for in #359.
+* **Instagram - Download any video:** `Choose a folder` under Downloads sends every photo and video to a folder you pick, a hidden one too, and it works on Android 9 without the storage permission. `Use Movies and Pictures` puts saves back. Asked for in #333.
+* **Instagram - Seek bar on stories:** new patch. `Seek bar on stories` under Stories puts a bar near the bottom of a video story. Drag it to jump anywhere in the video and the story plays on from there. Starts off. Asked for in #355.
+* **Instagram - Swipe through a chat's reels:** new patch. With `Swipe through a chat's reels` on under Messages, swiping up on a reel opened from a chat goes through the chat's other shared reels before any suggested ones. Starts off. Asked for in #350.
+* **Instagram - Hide suggested stories:** `Filter the Stories tray by verified accounts` under Stories keeps only verified accounts in the row at the top of Home, or only the ones that aren't. Your own story stays. Starts off. Asked for in #340.
+
+### Bug Fixes
+
+* **Instagram - Show if a profile follows you:** On your Following list, Doesn't follow you now comes before the name. A long name used to push it off the end of the line. Reported in #351.
+* **Instagram:** `Hide the emoji row` and `Hide Follow on posts` now work the moment you switch them on. Before, nothing changed until you left Instagram and came back.
+* **Instagram:** `Hide suggested stories` adds `Keep the Stories tray in the feed` under Stories. On some accounts the row floated over Home mid-feed and stayed put while posts scrolled under it. Now it stays in the feed. Starts off. Reported in #357.
+* **Instagram:** Morphe Manager now knows the armeabi-v7a, x86 and x86_64 builds of Instagram too, so an older 32-bit phone is pointed at the build it can install instead of the arm64 one. Reported in #346.
+* **Instagram:** `Glass tab bar` no longer leaves a dark band under a reel opened from the feed, where Instagram hides the tab bar. Reels opened from the Reels tab still stop above the bar. Reported in #347.
+* **Instagram:** `Start stories with sound` turns Instagram's sound back off when you leave a story, so Feed and Reels stay muted. Coming back to the story turns it on again, and a story you muted yourself stays muted. Reported in #342.
+* **Instagram:** `Download any story` also adds Download to the menu of your own highlights, which Instagram builds differently from other story menus. Reported in #339.
+* **Instagram:** `Hide Follow on feed posts` also filters Subscribe before the feed header builds it. The author's name, time and menu keep their native paths.
+* **Instagram:** `Tap to play` keeps a Reels auto-scroll allowance for the next Reel. Feed and unidentified players can't spend it, and a real tap on Feed still works.
+* **Instagram:** `Group Instagram's notifications` keeps summaries while their notifications remain. Turning grouping off or removing one notification no longer dismisses the others. Pending posts stay protected while Android catches up. One notification uses the singular count label.
+* **Instagram:** Turning off profile posts as a list, or pausing HushGram, cancels an automatic opening that was still waiting for the grid.
+* **Instagram:** Canceling a download can finish while DNS, proxy discovery or response setup is still waiting. Late responses can't write a file, and repeated cancellations keep a bounded number of workers.
+* **Instagram:** The downloader closes opened response streams on success and failure. Cache bytes stay only after a successful close.
+* **Instagram:** Closing `Save profile picture` stops its fetch even when the general background workers are busy.
+* **Instagram:** `Download any video` adds source metadata to JPEG photos saved through Save all and Choose pages, as it does for a single photo. Videos and other image formats stay unchanged.
+* **Instagram:** Download history repairs a partially written record before its next write. Later saves remain listed after a restart.
+* **Instagram:** A failed PIN save keeps the setup form open and reports the failure. The PIN and its retry counters are saved together.
+* **Instagram:** PIN retry limits still apply in the current process when their counters can't be saved.
+* **Instagram:** `HushGram settings` saves a timed lock and its wait together. Lock, unlock and wait actions no longer report success after a failed write.
+* **Instagram:** `HushGram settings` checks the current lock before an editor or delayed action saves. Imports and Undo check again at their write boundary, and a held Undo remains available until its original deadline.
+* **Instagram:** Font imports finish reading and closing their provider before replacing a live font. Failed or stale imports leave the current files alone, and reopening settings can't start a competing copy.
+* **Instagram:** Replacing an imported app font keeps Restart now available even when the font choice hasn't changed.
+* **Instagram:** Settings backups restore large selections of hidden Instagram settings rows. Selecting all 161 supported rows no longer causes that choice to be skipped.
+* **Instagram:** `Hide suggested posts` keeps native paging when a filtered page retains a real post, even before its list is displayed. Header-only pages can still finish.
+* **Instagram:** `Glass tab bar` blur recovers after a temporary capture failure on a still screen. Automatic retries stay bounded, and pending work stops when the bar leaves or HushGram pauses.
+* **Instagram:** `Story text fonts` puts local fonts before Instagram's paid section, so selecting one doesn't open a Plus offer. Instagram's paid fonts keep their subscription checks. Reported in #275 and #325.
+* **Instagram:** `View stories anonymously` keeps your own story, Create and special tray entries in their original positions during watched-story sorting. Ordinary story rings keep their order within the unseen and watched groups.
+* **Instagram:** `HushGram settings` requires Android 9 on every ABI, including the two 32-bit APKs Instagram ships for Android 8. Manifest checks verify that floor and preserve any higher vendor minimum.
+* **Instagram:** `Show if a profile follows you` waits for unique followers to match the account's count before recording recent unfollowers. Short lists and older queued saves can't replace a newer snapshot, and failed saves can be retried.
+* **Instagram:** `HushGram settings` lets go of a closed screen or dialog. The moving title used to keep every one you'd opened in memory until Instagram restarted.
+* **Instagram:** `Convert to keep the full size` asks the phone's encoder for limited range BT.709 color. Left to choose, some encoders write a file other apps show with shifted colors.
+
+* **Tooling:** Cached patch lookups now refresh when classes are added, replaced or removed. Unchanged classes keep their cached reads.
+* **Tooling:** Release walkthroughs require matching bundle, candidate and installed APK evidence, with visible content for each required destination. Incomplete receipts, changed installs and covered pages can't authorize publication.
+* **Tooling:** Walk navigation checks the chosen tap point, including covers over a partly visible control. Settings labels keep their own location when a row handles the tap.
+* **Tooling:** The walk accepts a loaded Explore grid under Instagram's empty Compose layer. A labeled, clickable, focusable, filled or differently built layer still counts as a cover.
+* **Tooling:** The release walk expands each settings category in place and checks it folds again, since Back now closes settings. A row only counts under its own heading, and every row is checked against the settings source.
+* **Tooling:** The source census keeps a relicensed source's old licence pinned and records code it took from elsewhere. InstaEclipse is GPL-3.0 now, and the HushGram downloader it carries counts as ours. Stylus dropped its Instagram patch.
+* **Tooling:** The build moves to the Morphe patches plugin 2.0.0 and Kotlin 2.4.21, held to one version across the plugin's classpath. Patched apps come out the same, and the bundle carries Kotlin stdlib 2.4.21.
+
+### Improvements
+
+* **Instagram:** HushGram now patches Instagram 453.0.0.55.79 instead of 452.1.0.53.64. Get APKMirror's (arm64-v8a) (480-640dpi) (Android 9.0+) variant, build 385914283. The armeabi-v7a build (385914282) is declared too, and so are the x86 and x86_64 builds (385914284 and 385914285). Thanks to toidicakhia for #366.
+* **Instagram:** HushGram's settings use Instagram's own blues instead of pink. Switches and buttons take its indigo button color, while icons and headings use the lighter blue Instagram gives links on a dark screen.
+* **Instagram:** Every HushGram title wears Instagram's gradient now, including the settings bar, its dialogs and the lock screen. The colors drift slowly and a sheen sweeps across every few seconds, even with Android's animations turned off.
+* **Instagram:** Settings categories expand their controls directly underneath. Several sections can stay open, and tapping a heading collapses it. Search finds controls across every section and restores your open sections when cleared.
+* **Instagram:** Settings put switches with the screen they change. The Notifications page's suggestion switches moved to Notifications, the Reels tab's to Tab bar, and anonymous DM photos to Messages. Searching their old section still finds them.
+* **Instagram:** The Updates section in settings is now called Version warnings, since all it holds is the switch for Instagram's "this version is too old" screen. Searching for Updates still finds it.
+* **Instagram:** Settings open on Ads and privacy now. Settings entry moved down next to backup and the other upkeep sections, after the everyday controls.
+* **Instagram:** Pause and diagnostics folds like the other sections now, so Debug logging and the report rows don't fill the overview. It opens by itself while HushGram is paused, the settings are locked or a save was interrupted.
+* **Instagram:** Settings opens with Search, the list view option and a compact category list with shorter descriptions. Quick setups and the active-status banner are gone. Larger text still wraps.
+* **Tooling:** The patching help explains the small-heap limit and keeps Manager's embedded VM workaround.
+* **Instagram:** Download file names support `{shortcode}`, using the parent post's code for carousel pages. Unknown codes are left out. Photo names use the template when it includes that token.
+* **Instagram:** `Date in backup file names` adds the local date and time to settings exports. It starts off, keeping the existing backup name until enabled.
+* **Tooling:** Updated to Morphe patcher 2.0.1 and its matching Smali library. Morphe Manager 2.2.0 or newer is required. The dependency audit separately reviews Morphe Desktop 1.19.1.
+* **Instagram:** Added Traditional Chinese (Taiwan), contributed by JhouHank in #313. Traditional Chinese script preferences and Hong Kong or Macao locales use the new table.
+* **Tooling:** GitHub release notes now read like Hushfacebook's. A short summary comes first, then plain grouped bullets with no Instagram label, the update steps and what was checked.
+* **Tooling:** The bundle now carries Gson 2.15.0. The patch catalog comes out byte for byte the same, and new tests hold its key order, nulls and unescaped text, including emoji.
+* **Instagram:** Hide the emoji row, Hide Follow on posts, Rounded corners on Reels and Thicker story progress bar now share one check before each frame. With several on, Instagram does that work once per frame instead of once for each.
+
 ## 0.0.16 (2026-10-24)
 
 ### Features
@@ -93,6 +179,9 @@ Every HushGram release, newest first.
 * **Instagram:** Patches that find their code by a piece of text, or by Instagram's internal labels, now look it up directly instead of checking every string. Patching is about 2% quicker. The patched app is the same. Refs #173.
 * **Instagram:** Copy comment and Save comment photo now find the comment menu from the patcher's index, where they used to read every method. Patching with every patch on takes about 4% less time, and the patched app doesn't change. Refs #173.
 * **Instagram - View stories anonymously:** The patch does about 40% less work while patching, since its check for other callers asks the patcher's index a narrower question. Total patching time barely moves. The patched app is the same. Refs #173.
+* **Instagram - Change the like animation:** Finding the feed's hearts now reads only the code that calls them, where it used to read the whole app. The patch does almost none of that work now, though total patching time barely moves. Same patched app. Refs #173.
+* **Instagram - Install next to Instagram:** Finding where Instagram names its content providers takes one look through the app's text now, not one per provider. Patching with every patch on takes about 4% less time, and the patched app is the same. Refs #173.
+* **Instagram - Lock your messages:** The patch finds the inbox's unread badge through the patcher's index now, instead of checking every method in the app. That part takes almost no time anymore, and the patched app doesn't change. Refs #173.
 * **Tooling:** `scripts/native-runner.ps1` runs checks inside the installed patched Instagram on an offline emulator, as a throwaway signed-out Android user. Each verdict names the exact APK it ran on. Two controls (build identity, a missing hook) must hold before feature checks count.
 * **Tooling:** The native runner's first feature checks cover Hide your active status. They build Instagram's own presence requests without sending them, and only Active may turn Idle, only while the switch is on and HushGram isn't paused.
 * **Tooling:** The native runner checks View DM photos and videos anonymously on Instagram's receipt handler. Switched on, the handler finishes a stand-in receipt on the phone without building its request. Voice receipts, a paused HushGram and the switch off stay Instagram's.

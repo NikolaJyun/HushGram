@@ -39,9 +39,12 @@ import java.util.function.Predicate;
 
 import app.hushgram.extension.instagram.direct.MessagesLock;
 import app.hushgram.extension.instagram.download.SaveLeftovers;
+import app.hushgram.extension.instagram.feed.CarouselPeek;
 import app.hushgram.extension.instagram.feed.CommentEmojiRow;
 import app.hushgram.extension.instagram.feed.FeedFollowButton;
 import app.hushgram.extension.instagram.feed.FollowingFeed;
+import app.hushgram.extension.instagram.feed.ReelCorners;
+import app.hushgram.extension.instagram.feed.StoryCorners;
 import app.hushgram.extension.instagram.misc.MediaCache;
 import app.hushgram.extension.instagram.misc.GlassTabBar;
 import app.hushgram.extension.instagram.reels.BurnInGuard;
@@ -53,6 +56,7 @@ import app.hushgram.extension.instagram.misc.ProfileSaved;
 import app.hushgram.extension.instagram.misc.LaunchScreen;
 import app.hushgram.extension.instagram.misc.AppIcon;
 import app.hushgram.extension.instagram.profile.ProfileTitle;
+import app.hushgram.extension.instagram.stories.StoryProgressBar;
 import app.hushgram.extension.shared.L10n;
 import app.hushgram.extension.shared.Logger;
 import app.hushgram.extension.shared.Utils;
@@ -111,7 +115,7 @@ public final class SettingsEntry {
     private static WeakReference<Activity> host;
     private static volatile boolean closedByUser;
     /**
-     * The category page the pending request opens on, after Restart now. Kept while the screen
+     * The category the pending request opens expanded, after Restart now. Kept while the screen
      * moves to a screen in front, and dropped by the next request or the person closing it.
      */
     private static volatile String requestedPage;
@@ -150,6 +154,10 @@ public final class SettingsEntry {
         CommentEmojiRow.install(context);
         FeedFollowButton.install(context);
         FollowingFeed.install(context);
+        ReelCorners.install(context);
+        StoryCorners.install(context);
+        CarouselPeek.install(context);
+        StoryProgressBar.install(context);
         ProfileMenuPress.install(context);
         ProfileTitle.install(context);
         LaunchScreen.install(context);

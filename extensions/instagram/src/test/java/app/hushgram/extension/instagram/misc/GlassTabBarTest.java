@@ -801,6 +801,7 @@ public class GlassTabBarTest {
     public void aReplacedBarIsRestyledAndTheOldOneCanBeCollected() throws Exception {
         try (GlassHost host = new GlassHost(Color.BLACK, true, GlassHeight.STANDARD, false, false)) {
             GlassTabBar.apply(host.activity);
+            arrangeCatchUp(host.bar.getBackground());
             java.lang.ref.WeakReference<View> old = new java.lang.ref.WeakReference<>(host.bar);
             Class<?> pillType = host.bar.getBackground().getClass();
 
@@ -1184,6 +1185,7 @@ public class GlassTabBarTest {
         LinearLayout bar;
         final float density;
         final AtomicInteger clicks = new AtomicInteger();
+        Runnable barInvalidated;
         private final Integer previousId;
         private final int base;
         private final GlassTabBar.Watcher watcher = new GlassTabBar.Watcher();
@@ -1221,7 +1223,12 @@ public class GlassTabBarTest {
         }
 
         private LinearLayout newBar() {
-            LinearLayout made = new LinearLayout(activity);
+            LinearLayout made = new LinearLayout(activity) {
+                @Override public void invalidate() {
+                    super.invalidate();
+                    if (barInvalidated != null) barInvalidated.run();
+                }
+            };
             made.setId(BAR_ID);
             made.setOrientation(LinearLayout.HORIZONTAL);
             made.setBackgroundColor(base);
@@ -1310,6 +1317,7 @@ public class GlassTabBarTest {
         }
 
         @Override public void close() {
+            barInvalidated = null;
             Map<String, Integer> ids = ReflectionHelpers.getStaticField(GlassTabBar.class, "IDS");
             synchronized (ids) {
                 if (previousId == null) ids.remove(GlassTabBar.TAB_BAR);
@@ -2067,8 +2075,184 @@ public class GlassTabBarTest {
 
             ShadowLooper.idleMainLooper(GlassTabBar.BLUR_REST_MS, java.util.concurrent.TimeUnit.MILLISECONDS);
             assertFalse(tries.resting(SystemClock.uptimeMillis()));
+            assertTrue("the rest over, a still screen recovers without another frame",
+                    (boolean) ReflectionHelpers.getField(pill[0], "recorded"));
+        }
+    }
+
+    @Test
+    @GraphicsMode(GraphicsMode.Mode.NATIVE)
+    @Config(sdk = 33, qualifiers = "en-rUS-w411dp-h891dp-xhdpi")
+    public void aPermanentCaptureFailureHasABoundedRecoveryAndAFreshFrameCanTryAgain() {
+        GlassTabBar.animationsOnForTests = false;
+        try (GlassHost host = new GlassHost(Color.BLACK, true, GlassHeight.STANDARD, false, true)) {
+            boolean[] throwing = {false};
+            Object[] pill = {null};
+            AtomicInteger captures = new AtomicInteger();
+            View feed = new View(host.activity) {
+                @Override public void draw(Canvas canvas) {
+                    if (pill[0] != null && (boolean) ReflectionHelpers.getField(pill[0], "drawingBackdrop")) {
+                        captures.incrementAndGet();
+                        if (throwing[0]) throw new IllegalStateException("still recycled");
+                    }
+                    super.draw(canvas);
+                }
+            };
+            host.root.addView(feed, 0, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            GlassTabBar.apply(host.activity);
             host.frame();
-            assertTrue("the rest over, the blur records again", (boolean) ReflectionHelpers.getField(pill[0], "recorded"));
+            // This small host has no native content/shadow ids. Let their bounded lookup redraws
+            // finish before asking whether capture retries can keep an otherwise still screen awake.
+            ShadowLooper.idleMainLooper(GlassTabBar.RESEARCH_MS * (GlassTabBar.MISS_REDRAWS + 1), java.util.concurrent.TimeUnit.MILLISECONDS);
+            pill[0] = host.bar.getBackground();
+            ReflectionHelpers.callInstanceMethod(pill[0], "cancelCatchUp");
+            AtomicInteger frames = new AtomicInteger();
+            host.bar.getViewTreeObserver().addOnPreDrawListener(() -> {
+                frames.incrementAndGet();
+                return true;
+            });
+            throwing[0] = true;
+            ReflectionHelpers.setField(pill[0], "recorded", false);
+            ReflectionHelpers.callInstanceMethod(pill[0], "recordIfDue");
+            ShadowLooper.idleMainLooper(GlassTabBar.BLUR_REST_MS * 3, java.util.concurrent.TimeUnit.MILLISECONDS);
+            assertEquals("failed captures never request their own frames", 0, frames.get());
+            assertEquals("one frame, two short retries and one retry after resting", GlassTabBar.BLUR_TRIES + 1, captures.get());
+            assertFalse("a permanent failure stops waking the main thread", (boolean) ReflectionHelpers.getField(pill[0], "catchUpPending"));
+            int stoppedAt = captures.get();
+            ShadowLooper.idleMainLooper(GlassTabBar.BLUR_REST_MS * 3, java.util.concurrent.TimeUnit.MILLISECONDS);
+            assertEquals("no timer polls forever", stoppedAt, captures.get());
+
+            throwing[0] = false;
+            host.frame();
+            assertTrue("new screen activity permits recovery", (boolean) ReflectionHelpers.getField(pill[0], "recorded"));
+            assertTrue(captures.get() > stoppedAt);
+        }
+    }
+
+    @Test
+    @GraphicsMode(GraphicsMode.Mode.NATIVE)
+    @Config(sdk = 33, qualifiers = "en-rUS-w411dp-h891dp-xhdpi")
+    public void successfulVideoCopiesCannotKeepAFailingBackdropRetrying() {
+        GlassTabBar.animationsOnForTests = false;
+        SurfaceFrames.Copier previousCopier = SurfaceFrames.copier;
+        java.util.function.Predicate<SurfaceView> previousSurface = SurfaceFrames.hasSurface;
+        boolean[] canCopy = {false};
+        AtomicInteger copies = new AtomicInteger();
+        SurfaceFrames.hasSurface = view -> canCopy[0];
+        SurfaceFrames.copier = (view, into, done) -> {
+            copies.incrementAndGet();
+            into.eraseColor(Color.YELLOW);
+            new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> done.copied(true), 1);
+        };
+        try (GlassHost host = new GlassHost(Color.BLACK, true, GlassHeight.STANDARD, false, true)) {
+            SurfaceView video = new SurfaceView(host.activity);
+            host.root.addView(video, 0, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            boolean[] throwing = {false};
+            Object[] pill = {null};
+            AtomicInteger captures = new AtomicInteger();
+            View feed = new View(host.activity) {
+                @Override public void draw(Canvas canvas) {
+                    if (pill[0] != null && (boolean) ReflectionHelpers.getField(pill[0], "drawingBackdrop")) {
+                        captures.incrementAndGet();
+                        if (throwing[0]) throw new IllegalStateException("still recycled beside video");
+                    }
+                    super.draw(canvas);
+                }
+            };
+            host.root.addView(feed, 1, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            GlassTabBar.apply(host.activity);
+            host.frame();
+            ShadowLooper.idleMainLooper(GlassTabBar.RESEARCH_MS * (GlassTabBar.MISS_REDRAWS + 1), java.util.concurrent.TimeUnit.MILLISECONDS);
+            pill[0] = host.bar.getBackground();
+            SurfaceFrames held = ReflectionHelpers.getField(pill[0], "frames");
+            assertTrue("the visible video crosses the captured strip", video.isShown() && video.getHeight() > 0);
+            ReflectionHelpers.callInstanceMethod(pill[0], "cancelCatchUp");
+            AtomicInteger frames = new AtomicInteger();
+            host.bar.getViewTreeObserver().addOnPreDrawListener(() -> {
+                frames.incrementAndGet();
+                return true;
+            });
+            canCopy[0] = true;
+            // The small host normally drives frames by hand. Coalesce invalidations into window
+            // frames here, so PixelCopy's actual refresh callback can renew the retry budget.
+            boolean[] framePending = {false};
+            Runnable drawFrame = () -> {
+                framePending[0] = false;
+                host.bar.getViewTreeObserver().dispatchOnPreDraw();
+            };
+            host.barInvalidated = () -> {
+                if (!framePending[0]) {
+                    framePending[0] = true;
+                    host.bar.postDelayed(drawFrame, 16);
+                }
+            };
+            try {
+                throwing[0] = true;
+                ReflectionHelpers.setField(pill[0], "recorded", false);
+                ReflectionHelpers.callInstanceMethod(pill[0], "recordIfDue");
+                ShadowLooper.idleMainLooper(GlassTabBar.BLUR_REST_MS * 3, java.util.concurrent.TimeUnit.MILLISECONDS);
+                assertEquals("failed captures beside video never request their own frames (captures=" + captures.get()
+                        + ", copies=" + copies.get() + ")", 0, frames.get());
+                assertEquals("one frame, two short retries and one retry after resting", GlassTabBar.BLUR_TRIES + 1, captures.get());
+                assertEquals("a failed capture never starts a video refresh", 0, copies.get());
+                assertFalse("video cannot keep the failure timer alive", (boolean) ReflectionHelpers.getField(pill[0], "catchUpPending"));
+                int stoppedAt = captures.get();
+                ShadowLooper.idleMainLooper(GlassTabBar.BLUR_REST_MS * 3, java.util.concurrent.TimeUnit.MILLISECONDS);
+                assertEquals("no capture polls forever", stoppedAt, captures.get());
+                assertEquals("no copy polls forever", 0, copies.get());
+                assertEquals("no induced frame polls forever", 0, frames.get());
+
+                throwing[0] = false;
+                host.frame();
+                assertTrue("a real frame recovers the backdrop", (boolean) ReflectionHelpers.getField(pill[0], "recorded"));
+                assertNotNull("the recovered backdrop still copies video", held.frameOf(video));
+                assertEquals(Color.YELLOW, held.frameOf(video).getPixel(0, 0));
+                int copied = copies.get();
+                int refreshed = frames.get();
+                ShadowLooper.idleMainLooper(SurfaceFrames.COPY_EVERY_MS * 3, java.util.concurrent.TimeUnit.MILLISECONDS);
+                host.frame();
+                assertTrue("another real frame can refresh the video", copies.get() > copied);
+                assertTrue("landed video asks for a frame beyond the real frame", frames.get() > refreshed + 1);
+            } finally {
+                host.barInvalidated = null;
+                host.bar.removeCallbacks(drawFrame);
+            }
+        } finally {
+            SurfaceFrames.copier = previousCopier;
+            SurfaceFrames.hasSurface = previousSurface;
+        }
+    }
+
+    @Test
+    @GraphicsMode(GraphicsMode.Mode.NATIVE)
+    @Config(sdk = 33)
+    public void aRestingRecoveryIsCancelledByResetDetachDiscardAndPause() {
+        GlassTabBar.animationsOnForTests = false;
+        for (int ending = 0; ending < 4; ending++) {
+            try (GlassHost host = new GlassHost(Color.BLACK, true, GlassHeight.STANDARD, false, true)) {
+                GlassTabBar.apply(host.activity);
+                host.frame();
+                Object pill = host.bar.getBackground();
+                GlassTabBar.BlurTries tries = ReflectionHelpers.getField(host.glass(), "tries");
+                long now = SystemClock.uptimeMillis();
+                for (int i = 0; i < GlassTabBar.BLUR_TRIES; i++) tries.failed(now);
+                ReflectionHelpers.callInstanceMethod(pill, "cancelCatchUp");
+                ReflectionHelpers.setField(pill, "recorded", false);
+                ReflectionHelpers.callInstanceMethod(pill, "retrySoon");
+                assertTrue("resting recovery was scheduled", (boolean) ReflectionHelpers.getField(pill, "catchUpPending"));
+
+                if (ending == 0) GlassTabBar.resetForTests();
+                else if (ending == 1) host.root.removeView(host.bar);
+                else if (ending == 2) ReflectionHelpers.callInstanceMethod(pill, "discard");
+                else PauseForTests.pause(HushgramPause.Reason.SWITCH);
+
+                if (ending != 3) assertFalse("the pending task was removed", (boolean) ReflectionHelpers.getField(pill, "catchUpPending"));
+                ShadowLooper.idleMainLooper(GlassTabBar.BLUR_REST_MS * 2, java.util.concurrent.TimeUnit.MILLISECONDS);
+                assertFalse("nothing stays queued", (boolean) ReflectionHelpers.getField(pill, "catchUpPending"));
+                assertFalse("the cancelled task never captures", (boolean) ReflectionHelpers.getField(pill, "recorded"));
+            } finally {
+                PauseForTests.resume();
+            }
         }
     }
 
@@ -2116,6 +2300,43 @@ public class GlassTabBarTest {
         assertEquals(40, margin(instagrams));
         assertTrue(given.isEmpty());
         assertEquals("no id, nothing found", 0, GlassTabBar.reelsAboveTheBar(holder, bar, 0, 126, given));
+    }
+
+    /**
+     * #347: a reel opened from a feed post has Instagram hide the bar with Home selected, and the
+     * pill's slot kept under that viewer was a blank band. The slot stays while the bar shows, and with
+     * the Reels tab selected, where Instagram hides the bar for a paused reel (#221).
+     */
+    @Test
+    public void reelsKeepTheSlotWhileTheBarShowsOrReelsIsTheTab() {
+        Context context = RuntimeEnvironment.getApplication();
+        int reelsTab = 0x7f0b0c68;
+        FrameLayout bar = new FrameLayout(context);
+        View home = new View(context);
+        home.setId(0x7f0b17ff);
+        View reels = new View(context);
+        reels.setId(reelsTab);
+        bar.addView(home);
+        bar.addView(reels);
+        home.setSelected(true);
+
+        assertTrue("the bar shows over Home", GlassTabBar.reelsKeepTheSlot(bar, reelsTab));
+        bar.setTranslationY(200f);
+        assertTrue("the bar slid away still holds its slot (#170)", GlassTabBar.reelsKeepTheSlot(bar, reelsTab));
+        bar.setVisibility(View.GONE);
+        assertFalse("a feed post's reel with the bar hidden", GlassTabBar.reelsKeepTheSlot(bar, reelsTab));
+        bar.setVisibility(View.INVISIBLE);
+        assertFalse(GlassTabBar.reelsKeepTheSlot(bar, reelsTab));
+
+        home.setSelected(false);
+        reels.setSelected(true);
+        bar.setVisibility(View.GONE);
+        assertTrue("a paused reel in the Reels tab", GlassTabBar.reelsKeepTheSlot(bar, reelsTab));
+        assertFalse("no Reels tab id", GlassTabBar.reelsKeepTheSlot(bar, 0));
+        reels.setVisibility(View.INVISIBLE);
+        assertTrue("a Reels tab tucked out of the bar", GlassTabBar.reelsKeepTheSlot(bar, reelsTab));
+        reels.setSelected(false);
+        assertFalse(GlassTabBar.reelsKeepTheSlot(bar, reelsTab));
     }
 
     /**
